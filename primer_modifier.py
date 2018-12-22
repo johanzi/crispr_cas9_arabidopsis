@@ -1,5 +1,4 @@
 
-
 # Libaries
 import sys
 
@@ -14,11 +13,9 @@ PCR reaction with pCBC-DT1T2
 
 """
 
-
-# Script to generate primers for Cas9
-
-
 # Define sequence to add for sgRNA1 and 2
+# User needs to fill in according to requested overhang
+# for Golden Gate cloning and used pCBC vector
 
 # sgRNA1
 golden_gate_1_5p = "ATATATGGTCTCGATTG"
@@ -48,13 +45,16 @@ for line in file:
     if len(line) != 19:
         sys.exit("The target site "+str(line) +"  is not equal to 19")
     else:
-        if target_site == 1:
+        if target_site == "1":
             primer_golden_gate = golden_gate_1_5p + str(line) + golden_gate_1_3p
             primer_vector = str(line) + vector_overhang_1
-        elif target_site == 2:
-            primer_golden_gate = golden_gate_2_5p + str(line) + golden_gate_3_3p
+        elif target_site == "2":
+            primer_golden_gate = golden_gate_2_5p + str(line) + golden_gate_2_3p
             primer_vector = vector_overhang_2_5p + str(line) + vector_overhang_2_3p
         else:
             sys.exit("Choose either '1' or '2' for target site 1 and 2, respectively")
 
-            
+        print("Target site: "+line)
+        print("sgRNA site: "+str(target_site))
+        print("golden gate primer: "+ primer_golden_gate)
+        print("vector primer: "+primer_vector)
