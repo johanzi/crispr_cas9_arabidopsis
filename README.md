@@ -6,15 +6,14 @@ CRISPR-Cas9 editing
 
 ## Plasmids
 
-The construct is split into one module vector set (pCBC-DT1T2) contaning the guide RNAs (gRNAs) and a binary vector based on pCAMBIA (pHHE401E). The cloning is based on a primary PCR to add the proper target sequences on the gRNA on the module vector, *BsaI* restriction sites are used to ligate the module vector set to the binary vector and remove meanwhile its spectinomycin (SpR) resistance cassette.
+The construct is split into one module vector set (pCBC-DT1T2) contaning the guide RNAs (gRNAs) and a binary vector based on pCAMBIA (pHHE401E). The cloning is based on a primary PCR to add the proper target sequences on the gRNA on the module vector, *BsaI* restriction sites are used to ligate the module vector set to the binary vector and remove meanwhile its spectinomycin (SpR) resistance cassette [Xing et al 2014](https://bmcplantbiol.biomedcentral.com/articles/10.1186/s12870-014-0327-y).
 
-*Cas9* expression is driven by the promoter of the egg cell-specific *EC1.1* ([AT1G76750](https://www.arabidopsis.org/servlets/TairObject?id=29908&type=locus)) gene and the enhancer  *EC1.2* gene ([AT2G21740](https://www.arabidopsis.org/servlets/TairObject?accession=locus:2052536)). See [Wang et al. 2015](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0715-0) called *EASE*. This tissue-specific expression of *Cas9* allows to obtain T1 homozygous or biallelic plants instead of mosaic plants. The terminator of the *Pisum sativum rbcS E9* gene was tested according to previous observation ([Sarrion-Perdigones et al 2013](http://www.plantphysiol.org/content/162/3/1618.short)) and found more efficient than coupled with a NOS terminator (Wang et al 2015).
-
+*Cas9* expression is driven by the promoter of the egg cell-specific *EC1.1* ([AT1G76750](https://www.arabidopsis.org/servlets/TairObject?id=29908&type=locus)) gene and the enhancer  *EC1.2* gene ([AT2G21740](https://www.arabidopsis.org/servlets/TairObject?accession=locus:2052536)). This tissue-specific expression of *Cas9* allows to obtain T1 homozygous or biallelic plants instead of mosaic plants. The terminator of the *Pisum sativum rbcS E9* gene was tested according to previous observation ([Sarrion-Perdigones et al 2013](http://www.plantphysiol.org/content/162/3/1618.short)) and found more efficient than coupled with a NOS terminator. See reference [Wang et al. 2015](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0715-0).
 
 
 ### Module vector pCBC-DT1T2
 
-More information on https://www.addgene.org/50590/ derived from paper [Xing et al 2014](https://bmcplantbiol.biomedcentral.com/articles/10.1186/s12870-014-0327-y)
+More information on https://www.addgene.org/50590/
 
 This vector contains 2 single guide RNAs (sgRNAs) with each a target site (highlighted in yellow in image below). More targets can be added by adding primers with specific overhanging sequence for Golden Gate assembly. See more details about Golden Gate assembly on [NEB website](https://international.neb.com/applications/cloning-and-synthetic-biology/dna-assembly-and-cloning/golden-gate-assembly).
 
@@ -32,7 +31,7 @@ The enzyme cuts 1 nucleotide directly upstream of the recognition side on the + 
 
 ![](images/crRNA.PNG) 
 
-The 2 most outward primers indicated in red and blue allow to add specific overhanging sites matching to BsaI sites in the pHHE401E binary vector and allow directional cloning. The second 2 primers more inward contain a part of the vector pCBC-DT1T2. All primers contain their respective target sites (highlighted in yellow). This target site should be 20 bp long be adjacent to a NGG site (N being any nucleotide), which is not in the primer sequence. This site is called the protospacer adjacent motif (PAM). Cas9 enzymes cuts theoretically 3 bp upstream of the PAM motif (always within the target region).
+This target site should be 19 bp long be adjacent to a NGG site (N being any nucleotide), which is not in the primer sequence. This site is called the protospacer adjacent motif (PAM). Cas9 enzymes cuts theoretically 3 bp upstream of the PAM motif (always within the target region).
 
 For instance for the sequence `TATTTCGGG`, the kmer `GGG` is the PAM motif and the cut will therefore take place here: `TATT|TTCGGG`
 
@@ -42,14 +41,23 @@ Note that the vector does not contain the promoter of the first sgRNA and the se
 ### pHHE401E binary vector
 
 More information on https://www.addgene.org/71287/ 
-based on pCambia backbone for Agrobacterium-mediated transformation.
 
-## Primers
+pHHE401E is based on pCambia backbone for Agrobacterium-mediated transformation.
 
-For each target site
+## sgRNAs
+
+The vector pCBC-DT1T2 can contain two target sites. These should be no more than 100 bp apart.
+To generate 2 sgRNAs with each their target site, 4 primers need to be designed. Two primers for the target site 1 and 2 primers for the target size 2 (see image below).
+
+![](images/target_sites.PNG)
+
+The 2 most outward primers indicated in red and blue allow to add specific overhanging sites matching to BsaI sites in the pHHE401E binary vector and allow directional cloning. The second 2 primers more inward contain a part of the vector pCBC-DT1T2. All primers contain their respective target sites (highlighted in yellow). 
+
+Both should contain the 19 bp of the target site plus flanking regions that are either used for Gateway cloning or for the merging to the vector pCBC-DT1T2.
 
 
 # Authors:
 
-[Johan Zicola](https://github.com/johanzi)
-[Emmanuel Tergemina](https://github.com/EmmanuelTergemina)
+* [Johan Zicola](https://github.com/johanzi)
+
+* [Emmanuel Tergemina](https://github.com/EmmanuelTergemina)
