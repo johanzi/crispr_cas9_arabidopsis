@@ -47,3 +47,9 @@ based on pCambia backbone for Agrobacterium-mediated transformation.
 ## Primers
 
 For each target site
+
+
+# Authors:
+
+[Johan Zicola](https://github.com/johanzi)
+[Emmanuel Tergemina](https://github.com/EmmanuelTergemina)
