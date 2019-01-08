@@ -48,6 +48,8 @@ More information on https://www.addgene.org/71287/
 
 ## sgRNAs
 
+### Cloning strategy
+
 The vector pCBC-DT1T2 can contain two target sites. These should be no more than 100 bp apart in the genome.
 To generate 2 sgRNAs with each their target site (gRNA1 and gRNA2 indicated by blue arrows and highlighted in yellow in image below), 4 primers need to be designed. Two primers for the target site 1 and 2 primers for the target size 2 (see image below):
 
@@ -77,6 +79,121 @@ Note: If the PAM is located on the reverse strand, the sequence used in the prim
  ![](images/PAM_minus_strand.PNG)
  
  Note that the PAM should always be in 5' position of the target site in the pCBC-DT1T2 plasmid.
+
+### Select target sites with Synthego
+
+One can identify a cleavage site manually by looking at available PAM motifs, however using dedicated tools allow to identify these sites automatically and attribute them a score according to the likelihood to get an off-target and the potential efficiency of the Cas9 on the target sequence itself. The tool utilized here is the web-based tool for guide design by [Synthego](https://design.synthego.com/#/). It works for Arabidopsis and many other plant and animal species.
+
+In this example, we want to knockout *FLOWERING LOCUS T* by targeting the exon 2.
+
+#### 1. Select genome and gene to knockout on this [page](https://design.synthego.com/#/)
+
+![](images/synthego_step1.PNG)
+
+#### 2. Select the exon to target and copy paste the information of the recommended or/and additional guides on a spreadsheet program (Excel or Libre Office). One can select manually which guide to select for the cloning.
+
+![](images/synthego_step2.PNG)
+
+The software will be default show target sites for exon 1 as it is the most likely place to knockout the gene. However, one can change the target exon (highlighted in yellow in image below) but no green target sites (recommended) will appear.
+
+#### 3. Transfer data on Spreadsheet and select target sites
+
+![](images/synthego_step3.PNG)
+
+I selected 2 target sites (highlighted in yellow) which indicate high on-target values and a low off-target values. The cut sites are separated by 58 bp (24,332,588-24,332,530) which is below the 100 bp recommended threshold
+.
+Note: The on-target ranking is based on the Rule Set 2 model (see publication [Doench et al., 2016](https://www.nature.com/articles/nbt.3437) for more details). Since this method was developed on animal cells, I am not sure whether it really applies to Arabidopsis but since the same Cas9 enzyme is used, I assume it may not be dependent on the genome.
+
+#### 4. Design primers
+
+Since the output of Synthego is per default 20 bp target site and we want 19 bp target sites for our construct (I assume it should also work with 20 bp but we stick here to the published protocol [Wang et al. 2015](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0715-0). We need to remove the first nucleotide and convert the U into Ts. This can be done easily in command line:
+
+Paste the 2 sequences of interest in a text file `sgRNAs.txt`
+
+```
+UUGUUUAAUGAAGGUUAUGG
+UGAGUUAGUGCACAAACCAA
+```
+
+Convert Windows to unix EOLs
+
+```
+vim sgRNAs.txt -c ":set ff=unix" -c ":wq"
+```
+
+Remove the first character of each line (1st nucleotide in 5')
+
+```
+sed -i 's/^.//g' sgRNAs.txt
+```
+
+Replace U by Ts
+
+```
+sed -i 's/U/T/g' sgRNAs.txt
+```
+The final target sites are now 19 nuclotides:
+
+```
+cat sgRNAs.txt
+TGTTTAATGAAGGTTATGG
+GAGTTAGTGCACAAACCAA
+```
+
+Generate primer sequences for GoldenGate cloning
+
+```
+python /primer_modifier.py sgRNAs.txt
+
+Target sequence 1: tgtttaatgaaggttatgg
+DT1_BsF: ATATATGGTCTCGATTGtgtttaatgaaggttatggG
+DT1_F0: tgtttaatgaaggttatggGTTTTAGAGCTAGAAATAGCA
+DT2_BsR: ATTATTGGTCTCTAAACtgtttaatgaaggttatggCAA
+DT2_R0: AACtgtttaatgaaggttatggCAATCTCTTAGTCGACTCTAC
+
+
+Target sequence 2: gagttagtgcacaaaccaa
+DT1_BsF: ATATATGGTCTCGATTGgagttagtgcacaaaccaaG
+DT1_F0: gagttagtgcacaaaccaaGTTTTAGAGCTAGAAATAGCA
+DT2_BsR: ATTATTGGTCTCTAAACgagttagtgcacaaaccaaCAA
+DT2_R0: AACgagttagtgcacaaaccaaCAATCTCTTAGTCGACTCTAC
+
+
+
+```
+
+This generates for each target site the primers for both sgRNAs (target sequence in lowercase). The user decides then to each sgRNA each target sequence goes. For instance, I will put the target site `tgtttaatgaaggttatgg` in the first sgRNA and the target site `gagttagtgcacaaaccaa` in the second. I therefore need to order the following primers:
+
+```
+DT1_BsF: ATATATGGTCTCGATTGtgtttaatgaaggttatggG
+DT1_F0: tgtttaatgaaggttatggGTTTTAGAGCTAGAAATAGCA
+DT2_BsR: ATTATTGGTCTCTAAACgagttagtgcacaaaccaaCAA
+DT2_R0: AACgagttagtgcacaaaccaaCAATCTCTTAGTCGACTCTAC
+```
+
+These primers would fit on the pCBC plasmid as indicated below (lowercase nucleotides indicate target sites)
+
+![](images/sgRNA_primers.PNG)
+
+Note: the GoldenGate reaction is usually working straight away but the user can order additional primers for other cutting sites. In this case, select at step 3 additional target sites and generate the primer sequence for sgRNA1 and sgRNA2 as explained above.
+
+
+# GoldenGate cloning
+
+
+# Transformation and selection in E. coli
+
+
+# Transformation and selection in A. tumefaciens
+
+
+# Agrobacterium-mediated transformation of Arabidopsis
+
+
+# T1 selection
+
+
+
 
 # Authors:
 
