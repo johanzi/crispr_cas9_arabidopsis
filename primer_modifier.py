@@ -31,7 +31,7 @@ vector_overhang_2_5p = "AAC"
 vector_overhang_2_3p = "CAATCTCTTAGTCGACTCTAC"
 
 # Get input file containing primer sequence
-name_file = sys.argv[2] 
+name_file = sys.argv[1] 
 
 file = open(name_file, "r")
 
