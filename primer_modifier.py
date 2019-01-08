@@ -36,12 +36,14 @@ name_file = sys.argv[1]
 file = open(name_file, "r")
 
 for line in file:
-    line = line.strip()
-   
     if line.strip():
+        line = line.strip()
+        
         if len(line) != 19:
             sys.exit("The target site "+str(line) +"  is not equal to 19")
         else:
+            line = line.lower()
+            
             DT1_BsF = golden_gate_1_5p + str(line) + golden_gate_1_3p
             DT1_F0 = str(line) + vector_overhang_1
             DT2_BsR = golden_gate_2_5p + str(line) + golden_gate_2_3p
