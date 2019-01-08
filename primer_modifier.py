@@ -35,6 +35,8 @@ name_file = sys.argv[1]
 
 file = open(name_file, "r")
 
+num_sequence = 1
+
 for line in file:
     if line.strip():
         line = line.strip()
@@ -49,8 +51,12 @@ for line in file:
             DT2_BsR = golden_gate_2_5p + str(line) + golden_gate_2_3p
             DT2_R0 = vector_overhang_2_5p + str(line) + vector_overhang_2_3p
 
-            print("Target sequence: "+line)
+            print("Target sequence "+str(num_sequence)+": "+line)
             print("DT1_BsF: "+DT1_BsF)
             print("DT1_F0: "+DT1_F0)
             print("DT2_BsR: "+DT2_BsR)
             print("DT2_R0: "+DT2_R0)
+            print("\n")
+
+            num_sequence += 1
+
