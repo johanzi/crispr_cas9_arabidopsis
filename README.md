@@ -4,8 +4,6 @@ CRISPR-Cas9 editing
 
 # Table of contents
 
-- [CRISPR-Cas9 editing](#crispr-cas9-editing)
-- [Table of contents](#table-of-contents)
 - [Material required](#material-required)
   * [Plasmids](#plasmids)
     + [Module vector pCBC-DT1T2](#module-vector-pcbc-dt1t2)
@@ -13,16 +11,12 @@ CRISPR-Cas9 editing
   * [sgRNAs](#sgrnas)
     + [Cloning strategy](#cloning-strategy)
     + [Select target sites with Synthego](#select-target-sites-with-synthego)
-      - [1. Select genome and gene to knockout on this [page](https://design.synthego.com/#/)](#1-select-genome-and-gene-to-knockout-on-this--page--https---designsynthegocom----)
-      - [2. Select the exon to target and copy paste the information of the recommended or/and additional guides on a spreadsheet program (Excel or Libre Office). One can select manually which guide to select for the cloning.](#2-select-the-exon-to-target-and-copy-paste-the-information-of-the-recommended-or-and-additional-guides-on-a-spreadsheet-program--excel-or-libre-office--one-can-select-manually-which-guide-to-select-for-the-cloning)
-      - [3. Transfer data on Spreadsheet and select target sites](#3-transfer-data-on-spreadsheet-and-select-target-sites)
-      - [4. Design primers](#4-design-primers)
 - [GoldenGate cloning](#goldengate-cloning)
 - [Transformation and selection in E. coli](#transformation-and-selection-in-e-coli)
 - [Transformation and selection in A. tumefaciens](#transformation-and-selection-in-a-tumefaciens)
 - [Agrobacterium-mediated transformation of Arabidopsis](#agrobacterium-mediated-transformation-of-arabidopsis)
 - [T1 selection](#t1-selection)
-- [Authors:](#authors-)
+- [Authors](#authors)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -115,6 +109,9 @@ In this example, we want to knockout *FLOWERING LOCUS T* (AT1G65480) by targetin
 
 ![](images/synthego_step1.PNG)
 
+
+**Note:** The genome assembly used by Synthego (on 2018-01-08) for *Arabidopsis thaliana* is the ENSEMBL release 34 based on TAIR10 assembly (December 2016). Therefore, the new annotations from [Araport11](https://www.araport.org/data/araport11) assembly is not in there. This can be a problem for certain genes which have been reannotated. The size of the chromosomes remain unchanged between TAIR10 and Araport11. Check Araport11 latest annotation on `Araport11_GFF3_genes_transposons.201606.gff.gz` file which can be downloaded [here](https://www.araport.org/downloads/Araport11_latest/annotation) (note that one needs to register first to download data, it is free). Also, if one needs to transform another accession than the reference Col-0, the single nucleotide polymorphisms should be consider when designing the sgRNAs. The appropriate sequence can be downloaded on [1001genomes.org](http://tools.1001genomes.org/pseudogenomes/#select_strains) if the accession is part of the project. One can also generate a pseudogenome from a VCF file using the following [pipeline](https://github.com/johanzi/make_pseudogenome).
+
 **2. Select the exon to target**
 
 The software will be default show target sites for exon 1 (or exon 2 if the exon 1 contains only UTR) as it is the most likely place to knockout the gene. However, one can change the target exon (highlighted in yellow in image below) but no green target sites (recommended) will appear. This can be required in some cases, e.g. assess the effect of a natural mutation which induces a premature stop codon in the exon 2.
@@ -179,31 +176,32 @@ GAGTTAGTGCACAAACCAA
 
 * Generate primer sequences for GoldenGate cloning
 
+I can add a prefix as second argument to get directly a name for each of my primer. In this case, I use the prefix `AT1G65480_exon2`.
+
 ```
-python /primer_modifier.py sgRNAs.txt
+python /primer_modifier.py sgRNAs.txt AT1G65480_exon2
 
 Target sequence 1: tgtttaatgaaggttatgg
-DT1_BsF: ATATATGGTCTCGATTGtgtttaatgaaggttatggG
-DT1_F0: tgtttaatgaaggttatggGTTTTAGAGCTAGAAATAGCA
-DT2_BsR: ATTATTGGTCTCTAAACtgtttaatgaaggttatggCAA
-DT2_R0: AACtgtttaatgaaggttatggCAATCTCTTAGTCGACTCTAC
+AT1G65480_exon2_DT1_BsF ATATATGGTCTCGATTGtgtttaatgaaggttatggG
+AT1G65480_exon2_DT1_F0  tgtttaatgaaggttatggGTTTTAGAGCTAGAAATAGCA
+AT1G65480_exon2_DT2_BsR ATTATTGGTCTCTAAACtgtttaatgaaggttatggCAA
+AT1G65480_exon2_DT2_R0  AACtgtttaatgaaggttatggCAATCTCTTAGTCGACTCTAC
 
 
 Target sequence 2: gagttagtgcacaaaccaa
-DT1_BsF: ATATATGGTCTCGATTGgagttagtgcacaaaccaaG
-DT1_F0: gagttagtgcacaaaccaaGTTTTAGAGCTAGAAATAGCA
-DT2_BsR: ATTATTGGTCTCTAAACgagttagtgcacaaaccaaCAA
-DT2_R0: AACgagttagtgcacaaaccaaCAATCTCTTAGTCGACTCTAC
-
+AT1G65480_exon2_DT1_BsF ATATATGGTCTCGATTGgagttagtgcacaaaccaaG
+AT1G65480_exon2_DT1_F0  gagttagtgcacaaaccaaGTTTTAGAGCTAGAAATAGCA
+AT1G65480_exon2_DT2_BsR ATTATTGGTCTCTAAACgagttagtgcacaaaccaaCAA
+AT1G65480_exon2_DT2_R0  AACgagttagtgcacaaaccaaCAATCTCTTAGTCGACTCTAC
 ```
 
 This generates for each target site the primers for both sgRNAs (target sequence in lowercase). The user decides then to which sgRNA each target sequence goes. For instance, I will put the target site `tgtttaatgaaggttatgg` in the first sgRNA and the target site `gagttagtgcacaaaccaa` in the second. I therefore need to order the following primers:
 
 ```
-DT1_BsF: ATATATGGTCTCGATTGtgtttaatgaaggttatggG
-DT1_F0: tgtttaatgaaggttatggGTTTTAGAGCTAGAAATAGCA
-DT2_BsR: ATTATTGGTCTCTAAACgagttagtgcacaaaccaaCAA
-DT2_R0: AACgagttagtgcacaaaccaaCAATCTCTTAGTCGACTCTAC
+AT1G65480_exon2_DT1_BsF ATATATGGTCTCGATTGtgtttaatgaaggttatggG
+AT1G65480_exon2_DT1_F0  tgtttaatgaaggttatggGTTTTAGAGCTAGAAATAGCA
+AT1G65480_exon2_DT2_BsR ATTATTGGTCTCTAAACgagttagtgcacaaaccaaCAA
+AT1G65480_exon2_DT2_R0  AACgagttagtgcacaaaccaaCAATCTCTTAGTCGACTCTAC
 ```
 
 These primers would fit on the pCBC plasmid as indicated below (lowercase nucleotides indicate target sites)

@@ -35,6 +35,16 @@ name_file = sys.argv[1]
 
 file = open(name_file, "r")
 
+
+# Add prefix to primer name
+
+if len(sys.argv) == 3:
+    prefix = str(sys.argv[2])+"_"
+else:
+    prefix = ""
+
+
+# Initialize sequence number
 num_sequence = 1
 
 for line in file:
@@ -52,10 +62,10 @@ for line in file:
             DT2_R0 = vector_overhang_2_5p + str(line) + vector_overhang_2_3p
 
             print("Target sequence "+str(num_sequence)+": "+line)
-            print("DT1_BsF: "+DT1_BsF)
-            print("DT1_F0: "+DT1_F0)
-            print("DT2_BsR: "+DT2_BsR)
-            print("DT2_R0: "+DT2_R0)
+            print(prefix+"DT1_BsF\t"+DT1_BsF)
+            print(prefix+"DT1_F0\t"+DT1_F0)
+            print(prefix+"DT2_BsR\t"+DT2_BsR)
+            print(prefix+"DT2_R0\t"+DT2_R0)
             print("\n")
 
             num_sequence += 1
