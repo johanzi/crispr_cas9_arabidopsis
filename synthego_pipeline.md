@@ -1,4 +1,4 @@
-Define target site with Synthego
+Define target sites with Synthego
 ===
 
 In this example, we want to knockout *FLOWERING LOCUS T* (AT1G65480) by targeting the exon 2.

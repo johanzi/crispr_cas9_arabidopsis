@@ -4,13 +4,19 @@ CRISPR-Cas9 editing
 
 # Table of contents
 
+- [Introduction](#introduction)
+  * [CRISPR/Cas system](#crispr-cas-system)
+  * [single guide RNA](#single-guide-rna)
 - [Material required](#material-required)
   * [Plasmids](#plasmids)
     + [Module vector pCBC-DT1T2](#module-vector-pcbc-dt1t2)
     + [pHHE401E binary vector](#phhe401e-binary-vector)
-  * [sgRNAs](#sgrnas)
-    + [Cloning strategy](#cloning-strategy)
-    + [Select target sites with Synthego](#select-target-sites-with-synthego)
+- [Design of sgRNAs](#design-of-sgrnas)
+  * [Cloning strategy](#cloning-strategy)
+  * [Define target sites](#define-target-sites)
+  * [Verify potential off-target](#verify-potential-off-target)
+  * [Efficiency score](#efficiency-score)
+  * [Design primers](#design-primers)
 - [GoldenGate cloning](#goldengate-cloning)
 - [Transformation and selection in E. coli](#transformation-and-selection-in-e-coli)
 - [Transformation and selection in A. tumefaciens](#transformation-and-selection-in-a-tumefaciens)
@@ -22,11 +28,29 @@ CRISPR-Cas9 editing
 
 
 
+# Introduction
+
+## CRISPR/Cas system
+
+
+
+## single guide RNA
+
+A single guide RNA (sgRNA) is an engineered RNA molecule containing 2 elements:
+
+* a CRISPR RNA (crRNA) which contains the target site (also called **spacer**) of the genome and is usually 15-20 bp long 
+* a trans-activating crRNA (tracrRNA), also called **scaffold sequence**, which binds to the Cas9 nuclease
+
+In nature, these 2 elements form 2 separate RNA molecules which hybridize to ensure Cas9 activity at the target site specified by the crRNA. They were merged into one molecule called sgRNA to facilitate cloning. Hairpin structures within the sgRNA mimics the crRNA-tracrRNA complex enabling the binding of Cas9.
+
+**Note**: the original target sequence in the invading phage which is incorporated into the repeat-spacer array (also called CRISPR array) in bacteria is called the **protospacer**. It becomes the **spacer** once in the repeat-spacer array and becomes the crRNA when transcribed. **Protospacer adjacent motif** (PAM) defines the 3-nt motif adjacent (in 5') to the original **protospacer**. Since the term **target sequence/site** sounds more explicit than **spacer** to define the 19-20 nt sequence which matches the region of the genome to be targeted, we will stick to the **target sequence/site** across the text.
+
+
 # Material required
 
 ## Plasmids
 
-The construct is split into one module vector set (pCBC-DT1T2) containing the guide RNAs (gRNAs) and a binary vector based on pCAMBIA (pHHE401E) containing additional sequences ensuring proper expression of the sgRNAs and transformation into Arabidopsis. The cloning happens in 2 steps:
+The construct is split into one module vector set (pCBC-DT1T2) containing two single guide RNAs (sgRNAs) and a binary vector based on pCAMBIA (pHHE401E) containing additional sequences ensuring proper expression of the 2 sgRNAs and transformation into Arabidopsis. The cloning happens in 2 steps:
 
 1. First a PCR on pCBC-DT1T2 allows to add the proper target sequences on the gRNA and the *BsaI* restriction sites on pCBC-DT1T2 
 2. Secondly, a restriction-ligation step is performed to incorporate a part of pCBC-DT1T2 into pHHE401E, removing in the meantime its spectinomycin (SpR) resistance cassette of the latter [Xing et al 2014](https://bmcplantbiol.biomedcentral.com/articles/10.1186/s12870-014-0327-y).
@@ -38,11 +62,11 @@ The construct is split into one module vector set (pCBC-DT1T2) containing the gu
 
 More information on https://www.addgene.org/50590/
 
-Plasmid available in genebank format in `plasmids/pCBC_DT1T2.gbk`. This file can be open with the free software SnapGene viewer (download [here](https://www.snapgene.com/snapgene-viewer/)).
+Plasmid available in genebank format in [plasmids/pCBC_DT1T2.gbk](plasmids/pCBC_DT1T2.gbk). This file can be open with the free software SnapGene viewer (download [here](https://www.snapgene.com/snapgene-viewer/)).
 
-This vector contains 2 single guide RNAs (sgRNAs) target sequences (Ns). More targets can be added by adding primers with specific overhanging sequence for Golden Gate assembly. See more details about Golden Gate assembly on [NEB website](https://international.neb.com/applications/cloning-and-synthetic-biology/dna-assembly-and-cloning/golden-gate-assembly).
+This vector contains 2 sgRNAs (Ns). More target sequences can be added by adding primers with specific overhanging sequence for Golden Gate assembly. See more details about Golden Gate assembly on [NEB website](https://international.neb.com/applications/cloning-and-synthetic-biology/dna-assembly-and-cloning/golden-gate-assembly).
 
-The main principle to understand is that a type IIS restriction enzyme such as *BsaI*, used here, is able to cut besides its actual recognition site, allowing to create non-palindromic overhangs which allow directional cloning.
+The main principle to understand GoldenGate cloning is that a type IIS restriction enzyme such as *BsaI*, used here, is able to cut besides its actual recognition site, allowing to create non-palindromic overhangs which allow directional cloning.
 
 *BsaI* restriction site:
 
@@ -51,13 +75,13 @@ The main principle to understand is that a type IIS restriction enzyme such as *
 3'...CCAGAG(N)5...5'
 ```
 
-The enzyme cuts 1 nucleotide directly upstream of the recognition side on the + strand but 5 nucleotides upstream on the - strand (highlighted in yellow in figure below). The 5 nucleotides overhang can be chosen and included in any construct to allow ligation. T4 ligase is used to ligate the corresponding cohesive ends (it is also able to ligate blunt ends but with much lower efficiency).
+The enzyme cuts 1 nucleotide directly upstream of the recognition site on the + strand but 5 nucleotides upstream on the - strand (highlighted in yellow in figure below). The 5 nucleotides overhang can be chosen and included in any construct to allow ligation. T4 ligase is used to ligate the corresponding cohesive ends (it is also able to ligate blunt ends but with much lower efficiency).
 
 
 ![](images/BsaI_sites.PNG) 
 *Part of the plasmid pCBC-DT1T2 containing the elements which will be transfered into pHHE401E during the GoldenGate cloning. BsaI restriction sites are highlighted in yellow.*
 
-Note that the vector pCBC-DT1T2 does not contain the promoter of the first sgRNA and the second sgRNA contains neither its scaffolding RNA part nor its terminator. These sequences are actually in the pHHE401E binary vector and will be integrated in place after the digestion with *BsaI* enzyme and the ligation (GoldenGate cloning).
+Note that the vector pCBC-DT1T2 does not contain the promoter of the first sgRNA and the second sgRNA contains neither its scaffold sequence nor its terminator. These sequences are actually in the pHHE401E binary vector and will be integrated in place after the digestion with *BsaI* enzyme and the ligation (GoldenGate cloning).
 
 
 ### pHHE401E binary vector
@@ -66,29 +90,16 @@ pHHE401E is based on pCambia backbone for Agrobacterium-mediated transformation.
 
 More information on https://www.addgene.org/71287/ 
 
-Plasmid available in genebank format in `plasmids/pHEE401E.gbk`. This file can be open with the free software SnapGene viewer (download [here](https://www.snapgene.com/snapgene-viewer/)).
+Plasmid available in genebank format in [plasmids/pHEE401E.gbk](plasmids/pHEE401E.gbk). This file can be open with the free software SnapGene viewer (download [here](https://www.snapgene.com/snapgene-viewer/)).
 
 
 # Design of sgRNAs
 
-## What is a sgRNA?
-
-A single guide RNA (sgRNA) is an engineered RNA molecule containing 2 elements:
-
-* a CRISPR RNA (crRNA) which matches the target site of the genome and is usually 15-20 bp long 
-* a trans-activating crRNA (tracrRNA), also called scaffold sequence, which binds to the Cas9 nuclease
-
-In nature, these 2 elements form 2 separate RNA molecules which hybridize to ensure Cas9 activity at the target site specified by the crRNA. They were merged into one molecule called sgRNA to facilitate cloning. Hairpin structures within the sgRNA mimics the crRNA-tracrRNA complex enabling the binding of Cas9.
-
 ## Cloning strategy
 
-The vector pCBC-DT1T2 can contain two target sites, preferentially near each other and on the opposite DNA strand to facilitate imprecise repair by  nonhomologous end joining (NHEJ) The 2 sites allow to target 
+The vector pCBC-DT1T2 contain 2 sgRNAs, therefore 2 target sequences. They can target 2 different regions of the genome or target the same gene for instance.
 
-
-
-The recommended minimum distance between the 2 cleavage sites is 
-
-These should be no more than 100 bp apart in the genome.
+These should be no more than 100 bp apart in the genome (ref?)
 To generate 2 sgRNAs with each their target site (gRNA1 and gRNA2 indicated by blue arrows and highlighted in yellow in image below), 4 primers need to be designed. Two primers for the target site 1 and 2 primers for the target size 2 (see image below):
 
 Primers for the first sgRNA (green on picture below)
@@ -101,9 +112,9 @@ Primers for the second sgRNA (red on picture below)
 * DT2-BsR
 * DT2-R0
 
-These target sites should be 19 bp long be adjacent to a 5'-NGG-3' site (N being any nucleotide), which is not in the primer sequence (note that 20 bp long target sequence should also work, the theoretical range for SpCas9 being 15-20 bp). This NGG site is called the protospacer adjacent motif (PAM) and is specific for the SpCas9, which produced by the bacterium *Streptococcus pyogenes* (Cas9 from other species may have a different PAM). SpCas9 enzymes cuts theoretically 3 bp upstream of the PAM motif (always within the target region). The target sites are represented by Ns in the figure below. The PAM should always be originally located at the 5' end of the sgRNA target sequence (highlighted in yellow). 
+These target sequences should be 19 bp long be adjacent to a 5'-NGG-3' site (N being any nucleotide), which is not in the primer sequence (note that 20 bp long target sequence should also work, the theoretical range for SpCas9 being 15-20 bp). This NGG site is called the protospacer adjacent motif (PAM) and is specific to certain Cas9 nucleases, including the most used: SpCas9, which is produced by the bacterium *Streptococcus pyogenes* (Cas9 nucleases from other species may have a different PAM). SpCas9 enzymes cuts 3 bp upstream of the PAM motif (always within the target sequence). The PAM should always be originally located at the 5' end of the sgRNA target sequence.
 
-For instance for the sequence `TCGAGAGAGAGCGTATTTCGGG`, the kmer `GGG` is the PAM motif located 5' of the sequence and the cut will therefore take place here: `TCGAGAGAGAGCGTATT|TTCGGG`. The sequence to include in the 2 primers will be therefore the 19-mer `TCGAGAGAGAGCGTATTTTC` (note the PAM is not included).
+For instance for the 22-mer `TCGAGAGAGAGCGTATTTCGGG`, the 3-mer `GGG` is the PAM motif located 5' of the sequence and the cut will therefore take place here: `TCGAGAGAGAGCGTATT|TTCGGG`. The sequence to include in the 2 primers will be therefore the 19-mer `TCGAGAGAGAGCGTATTTTC` (the PAM should NOT be included).
 
 ![](images/sgRNAs.PNG)
 *Part of the plasmid pCBC-DT1T2 containing the elements which will be transfered into pHHE401E during the GoldenGate cloning. Target sites are highlighted in yellow.*
@@ -112,13 +123,10 @@ The 2 most outward primers indicated in red (DT1-BsF) and red (DT2-BsR) allow to
 
 Both should contain the 19 bp of the target site (highlighted in yellow) plus flanking regions that are either used for Gateway cloning or for the merging to the vector pCBC-DT1T2.
 
-
 **Note**: If the PAM is located on the reverse strand, the sequence used in the primer represents the reverse complement sequence of the + strand. See example below. Note that the PAM should always be in 5' position of the target site in the pCBC-DT1T2 plasmid.
 
- ![](images/PAM_minus_strand.PNG)
- 
- *Representation of a target site plus its PAM motif (highlighted in yellow) when located on reverse strand. The PAM is NEVER contained in the final primer sequence.*
- 
+![](images/PAM_minus_strand.PNG)
+*Representation of a target site plus its PAM motif (highlighted in yellow) when located on reverse strand. The PAM is NEVER contained in the final primer sequence.*
 
 ## Define target sites
 
@@ -139,7 +147,6 @@ Based on the information from [chopchop](http://chopchop.cbu.uib.no/instructions
 > According to [Cong et al., 2013](http://science.sciencemag.org/content/339/6121/819), single-base mismatches up to 11 bp 5' of the PAM completely  abolish cleavage by Cas9. However, mutations further upstream of the PAM retain cleavage activity. Based on this information, one must check that the designed target sequences are specific to the targeted locus.
 
 > According to [Hsu et al., 2013](https://www.nature.com/articles/nbt.2647), mismatches can be tolerated at any position except in the PAM motif. We have therefore created a second uniqueness method that searches for mismatches only in the 20 bp upstream of the PAM. This is the default method.
-
 
 ## Efficiency score
 
