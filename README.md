@@ -24,10 +24,12 @@ CRISPR-Cas9 editing
 
 # Material required
 
-
 ## Plasmids
 
-The construct is split into one module vector set (pCBC-DT1T2) contaning the guide RNAs (gRNAs) and a binary vector based on pCAMBIA (pHHE401E). The cloning is based on a primary PCR to add the proper target sequences on the gRNA on the module vector, *BsaI* restriction sites are used to ligate the module vector set to the binary vector and remove meanwhile its spectinomycin (SpR) resistance cassette [Xing et al 2014](https://bmcplantbiol.biomedcentral.com/articles/10.1186/s12870-014-0327-y).
+The construct is split into one module vector set (pCBC-DT1T2) containing the guide RNAs (gRNAs) and a binary vector based on pCAMBIA (pHHE401E) containing additional sequences ensuring proper expression of the sgRNAs and transformation into Arabidopsis. The cloning happens in 2 steps:
+
+1. First a PCR on pCBC-DT1T2 allows to add the proper target sequences on the gRNA and the *BsaI* restriction sites on pCBC-DT1T2 
+2. Secondly, a restriction-ligation step is performed to incorporate a part of pCBC-DT1T2 into pHHE401E, removing in the meantime its spectinomycin (SpR) resistance cassette of the latter [Xing et al 2014](https://bmcplantbiol.biomedcentral.com/articles/10.1186/s12870-014-0327-y).
 
 *Cas9* expression is driven by the promoter of the egg cell-specific *EC1.1* ([AT1G76750](https://www.arabidopsis.org/servlets/TairObject?id=29908&type=locus)) gene and the enhancer  *EC1.2* gene ([AT2G21740](https://www.arabidopsis.org/servlets/TairObject?accession=locus:2052536)). This tissue-specific expression of *Cas9* allows to obtain T1 homozygous or biallelic plants instead of mosaic plants. The terminator of the *Pisum sativum rbcS E9* gene was tested according to previous observation ([Sarrion-Perdigones et al 2013](http://www.plantphysiol.org/content/162/3/1618.short)) and found more efficient than coupled with a NOS terminator. See reference [Wang et al. 2015](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0715-0).
 
@@ -35,6 +37,8 @@ The construct is split into one module vector set (pCBC-DT1T2) contaning the gui
 ### Module vector pCBC-DT1T2
 
 More information on https://www.addgene.org/50590/
+
+Plasmid available in genebank format in `plasmids/pCBC_DT1T2.gbk`. This file can be open with the free software SnapGene viewer (download [here](https://www.snapgene.com/snapgene-viewer/)).
 
 This vector contains 2 single guide RNAs (sgRNAs) target sequences (Ns). More targets can be added by adding primers with specific overhanging sequence for Golden Gate assembly. See more details about Golden Gate assembly on [NEB website](https://international.neb.com/applications/cloning-and-synthetic-biology/dna-assembly-and-cloning/golden-gate-assembly).
 
@@ -50,8 +54,6 @@ The main principle to understand is that a type IIS restriction enzyme such as *
 The enzyme cuts 1 nucleotide directly upstream of the recognition side on the + strand but 5 nucleotides upstream on the - strand (highlighted in yellow in figure below). The 5 nucleotides overhang can be chosen and included in any construct to allow ligation. T4 ligase is used to ligate the corresponding cohesive ends (it is also able to ligate blunt ends but with much lower efficiency).
 
 
-
-
 ![](images/BsaI_sites.PNG) 
 *Part of the plasmid pCBC-DT1T2 containing the elements which will be transfered into pHHE401E during the GoldenGate cloning. BsaI restriction sites are highlighted in yellow.*
 
@@ -64,24 +66,42 @@ pHHE401E is based on pCambia backbone for Agrobacterium-mediated transformation.
 
 More information on https://www.addgene.org/71287/ 
 
-## sgRNAs
+Plasmid available in genebank format in `plasmids/pHEE401E.gbk`. This file can be open with the free software SnapGene viewer (download [here](https://www.snapgene.com/snapgene-viewer/)).
 
-### Cloning strategy
 
-The vector pCBC-DT1T2 can contain two target sites. These should be no more than 100 bp apart in the genome.
+# Design of sgRNAs
+
+## What is a sgRNA?
+
+A single guide RNA (sgRNA) is an engineered RNA molecule containing 2 elements:
+
+* a CRISPR RNA (crRNA) which matches the target site of the genome and is usually 15-20 bp long 
+* a trans-activating crRNA (tracrRNA), also called scaffold sequence, which binds to the Cas9 nuclease
+
+In nature, these 2 elements form 2 separate RNA molecules which hybridize to ensure Cas9 activity at the target site specified by the crRNA. They were merged into one molecule called sgRNA to facilitate cloning. Hairpin structures within the sgRNA mimics the crRNA-tracrRNA complex enabling the binding of Cas9.
+
+## Cloning strategy
+
+The vector pCBC-DT1T2 can contain two target sites, preferentially near each other and on the opposite DNA strand to facilitate imprecise repair by  nonhomologous end joining (NHEJ) The 2 sites allow to target 
+
+
+
+The recommended minimum distance between the 2 cleavage sites is 
+
+These should be no more than 100 bp apart in the genome.
 To generate 2 sgRNAs with each their target site (gRNA1 and gRNA2 indicated by blue arrows and highlighted in yellow in image below), 4 primers need to be designed. Two primers for the target site 1 and 2 primers for the target size 2 (see image below):
 
-First sgRNA (green on picture below)
+Primers for the first sgRNA (green on picture below)
 
 * DT1-BsF
 * DT1-F0
 
-Second sgRNA (red on picture below)
+Primers for the second sgRNA (red on picture below)
 
 * DT2-BsR
 * DT2-R0
 
-These target sites should be 19 bp long be adjacent to a NGG site (N being any nucleotide), which is not in the primer sequence. This site is called the protospacer adjacent motif (PAM). Cas9 enzymes cuts theoretically 3 bp upstream of the PAM motif (always within the target region). The target sites are represented by Ns in the figure below. The PAM should always be originally located at the 5' end of the sgRNA target sequence (highlighted in yellow). 
+These target sites should be 19 bp long be adjacent to a 5'-NGG-3' site (N being any nucleotide), which is not in the primer sequence (note that 20 bp long target sequence should also work, the theoretical range for SpCas9 being 15-20 bp). This NGG site is called the protospacer adjacent motif (PAM) and is specific for the SpCas9, which produced by the bacterium *Streptococcus pyogenes* (Cas9 from other species may have a different PAM). SpCas9 enzymes cuts theoretically 3 bp upstream of the PAM motif (always within the target region). The target sites are represented by Ns in the figure below. The PAM should always be originally located at the 5' end of the sgRNA target sequence (highlighted in yellow). 
 
 For instance for the sequence `TCGAGAGAGAGCGTATTTCGGG`, the kmer `GGG` is the PAM motif located 5' of the sequence and the cut will therefore take place here: `TCGAGAGAGAGCGTATT|TTCGGG`. The sequence to include in the 2 primers will be therefore the 19-mer `TCGAGAGAGAGCGTATTTTC` (note the PAM is not included).
 
@@ -99,45 +119,48 @@ Both should contain the 19 bp of the target site (highlighted in yellow) plus fl
  
  *Representation of a target site plus its PAM motif (highlighted in yellow) when located on reverse strand. The PAM is NEVER contained in the final primer sequence.*
  
-### Select target sites with Synthego
 
-One can identify a cleavage site manually by looking at available PAM motifs, however using dedicated tools allow to identify these sites automatically and attribute them a score according to the likelihood to get an off-target and the potential efficiency of the Cas9 on the target sequence itself. The tool utilized here is the web-based tool for guide design by [Synthego](https://design.synthego.com/#/). It works for Arabidopsis and many other plant and animal species.
+## Define target sites
 
-In this example, we want to knockout *FLOWERING LOCUS T* (AT1G65480) by targeting the exon 2.
+One can identify a cleavage site manually by looking at available PAM motifs, however using dedicated tools allow to identify these sites automatically and attribute them a score according to the likelihood to get an off-target and the potential efficiency of the Cas9 on the target sequence itself.
 
-**1. Select genome and gene to knockout on this [page](https://design.synthego.com/#/)**
+The tool utilized here is the web-based tool for guide design by [Synthego](https://design.synthego.com/#/). It works for Arabidopsis and many other plant and animal species. See for step-by-step in Synthego [here](synthego_pipeline.md).
 
-![](images/synthego_step1.PNG)
+Alternative webtools to Synthego:
 
+* [chopchop](http://chopchop.cbu.uib.no/search.php): This website also design for each target site the corresponding primer pair for genotyping
+* [crispr.cos](https://crispr.cos.uni-heidelberg.de/)
+* [CRISPR-PLANT](https://www.genome.arizona.edu/crispr/CRISPRsearch.html)
 
-**Note:** The genome assembly used by Synthego (on 2018-01-08) for *Arabidopsis thaliana* is the ENSEMBL release 34 based on TAIR10 assembly (December 2016). Therefore, the new annotations from [Araport11](https://www.araport.org/data/araport11) assembly is not in there. This can be a problem for certain genes which have been reannotated. The size of the chromosomes remain unchanged between TAIR10 and Araport11. Check Araport11 latest annotation on `Araport11_GFF3_genes_transposons.201606.gff.gz` file which can be downloaded [here](https://www.araport.org/downloads/Araport11_latest/annotation) (note that one needs to register first to download data, it is free). Also, if one needs to transform another accession than the reference Col-0, the single nucleotide polymorphisms should be consider when designing the sgRNAs. The appropriate sequence can be downloaded on [1001genomes.org](http://tools.1001genomes.org/pseudogenomes/#select_strains) if the accession is part of the project. One can also generate a pseudogenome from a VCF file using the following [pipeline](https://github.com/johanzi/make_pseudogenome).
+## Verify potential off-target
 
-**2. Select the exon to target**
+Based on the information from [chopchop](http://chopchop.cbu.uib.no/instructions.php) which refer to 2 publications:
 
-The software will be default show target sites for exon 1 (or exon 2 if the exon 1 contains only UTR) as it is the most likely place to knockout the gene. However, one can change the target exon (highlighted in yellow in image below) but no green target sites (recommended) will appear. This can be required in some cases, e.g. assess the effect of a natural mutation which induces a premature stop codon in the exon 2.
+> According to [Cong et al., 2013](http://science.sciencemag.org/content/339/6121/819), single-base mismatches up to 11 bp 5' of the PAM completely  abolish cleavage by Cas9. However, mutations further upstream of the PAM retain cleavage activity. Based on this information, one must check that the designed target sequences are specific to the targeted locus.
 
-![](images/synthego_step2.PNG)
-
-By clicking on one of the target site in the bottom table, a new window appears and display how Cas9 and the scaffold RNA bind to the sequence and where the enzyme cut. Very useful to understand how it works.
-
-**Example:**
-
-![](images/synthego_illustration.PNG)
+> According to [Hsu et al., 2013](https://www.nature.com/articles/nbt.2647), mismatches can be tolerated at any position except in the PAM motif. We have therefore created a second uniqueness method that searches for mismatches only in the 20 bp upstream of the PAM. This is the default method.
 
 
-**3. Transfer data on Spreadsheet and select target sites**
+## Efficiency score
 
-Select the exon to target (in that case, I change to exon 2) and then copy-paste the information of the recommended or/and additional guides into a spreadsheet program (Excel or Libre Office). One can select manually which guide to select for the cloning.
+Based on the information from [chopchop](http://chopchop.cbu.uib.no/instructions.php):
 
-![](images/synthego_step3.PNG)
+4 methods defining efficiency are described:
+ 
+* [Doench et al. 2014](https://www.nature.com/articles/nbt.3026) - only for NGG PAM
+* [Doench et al. 2016](https://www.nature.com/articles/nbt.3437) - only for NGG PAM
+* [Chari et al. 2015](https://www.nature.com/articles/nmeth.3473) - only NGG and NNAGAAW PAM's in hg19 and mm10
+* [Xu et al. 2015](https://genome.cshlp.org/content/25/8/1147.long) - only for NGG PAM (default)
 
-I selected 2 target sites (highlighted in yellow above) which indicate high on-target values and a low off-target values. The cut sites are separated by 58 bp (24,332,588-24,332,530) which is below the 100 bp recommended threshold
-.
-Note: The on-target ranking is based on the Rule Set 2 model (see publication [Doench et al., 2016](https://www.nature.com/articles/nbt.3437) for more details). Since this method was developed on animal cells, I am not sure whether it really applies to Arabidopsis but since the same Cas9 enzyme is used, I assume it may not be dependent on the genome.
+> The simplest form of efficiency score is 'G20', which prioritizes a guanine at position 20, just upstream of PAM
 
-**4. Design primers**
 
-Since the output of Synthego is giving per default 20 bp-long target sites and we want 19 bp-long target sites for our construct (I assume it should also work with 20 bp but we stick here to the published protocol [Wang et al. 2015](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0715-0). We need to remove the first nucleotide and convert the U into Ts. This can be done easily in the terminal:
+
+## Design primers
+
+Since the output of Synthego is giving per default 20 bp-long target sites and we want 19 bp-long target sites for our construct. 20 bp should also work but we stick here to the published protocol in [Xing et al. 2014](https://doi.org/10.1186/s12870-014-0327-y) although they did not really explain why they cut down the sequence to 19 bp in their additional information [here](https://static-content.springer.com/esm/art%3A10.1186%2Fs12870-014-0327-y/MediaObjects/12870_2014_327_MOESM3_ESM.pdf).
+
+We need to remove the first nucleotide and convert the U into Ts. This can be done easily in the terminal:
 
 * Paste the 2 sequences of interest in a text file `sgRNAs.txt`
 
@@ -152,19 +175,19 @@ UGAGUUAGUGCACAAACCAA
 vim sgRNAs.txt -c ":set ff=unix" -c ":wq"
 ```
 
-* Remove the first character of each line (1st nucleotide in 5')
+* Remove the first character of each line (1st nucleotide in 5') or not if you decide to stick to 20 bp
 
 ```
 sed -i 's/^.//g' sgRNAs.txt
 ```
 
-* Replace U by Ts
+* Replace Us by Ts
 
 ```
 sed -i 's/U/T/g' sgRNAs.txt
 ```
 
-The final target sites are now 19 nuclotides:
+The final target sites are now 19 nucleotides:
 
 ```
 cat sgRNAs.txt
