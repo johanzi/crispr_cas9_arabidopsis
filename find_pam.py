@@ -26,13 +26,15 @@ parser.add_argument("-f","--fasta", help="provide a fasta file containing one DN
 
 parser.add_argument("-o","--output", help="output name, per default name of the fasta file", type=str)
 
-parser.add_argument("-l","--length-protospacer", help="Length of the protospacer, default = 20 bp", type=int, default=19)
+# Note I need to provide both const and default argument to have these values even if flag is not given
+parser.add_argument("-l","--length-protospacer", help="Length of the protospacer, default = 20 bp", nargs='?', type=int, const=19, default=19)
 
-parser.add_argument("-p","--pam", help="Define PAM sequence, default = NGG", type=str, default="NGG")
+parser.add_argument("-p","--pam", help="Define PAM sequence, default = NGG", nargs='?', type=str, const="NGG", default="NGG" )
 
 args = parser.parse_args()
 
 ############################################################
+
 
 
 #################### FUNCTIONS ############################
@@ -48,14 +50,15 @@ def create_feature(sequence, name, start, end):
 # example: create_feature(sequence, "glup", 20,40)
 
 
+
 # Function to find PAM
 def search_motif(sequence):
 
-    motif = str(argparse.pam)
+    motif = str(args.pam)
     
     len_motif = int(len(motif))
 
-    len_protospacer = int(argparse.length_protospacer)
+    len_protospacer = int(args.length_protospacer)
     
     full_len = len_motif + len_protospacer
 
@@ -67,28 +70,37 @@ def search_motif(sequence):
     # Search on fw strand
     matches_fw = SeqUtils.nt_search(str(sequence.seq), motif)
     
-    start_positions_fw = matches_fw[1::]
+    print(sequence.seq) 
 
-    end_positions_fw = start - full_len for start in start_positions_fw
-
+    if len(matches_fw) > 1:
+        start_positions_fw = matches_fw[1::]
+        end_positions_fw = [ start - full_len for start in start_positions_fw ]
+        coordinates_fw = [start_positions_fw, end_positions_fw]
+    
+        print(coordinates_fw)
     # Loop over positions and create end position and generate a feature
     # based on length of protospacer
 
 
     # The coordinates are different and need to be corrected to match to fw strand
-    matches_rv = SeqUtils.nt_search(str(sequence.seq.reverse_complement()), motif)
+    reverse_seq = str(sequence.seq.reverse_complement())
     
-    start_positions_rv = matches_fw[1::]
+    print(reverse_seq)
+    matches_rv = SeqUtils.nt_search(reverse_seq, motif)
+   
+    print(matches_rv)
+    if len(matches_rv) > 1:
+        start_positions_rv = matches_fw[1::]
+        end_positions_rv = [ start - full_len for start in start_positions_rv ]
+        print(end_positions_rv)
 
-    end_positions_rv = start - full_len for start in start_positions_rv
+        # Need to convert the coordinates in forward strand
+        start_positions_rv = [ len_dna - start for start in start_positions_rv ]
+        end_positions_rv = [ len_dna - end for end in end_positions_rv ]
+        coordinates_rv = [start_positions_rv, end_positions_rv]
 
-    # Need to convert the coordinates in forward strand
-    start_positions_rv = len_dna - start for start in start_positions_rv
-    end_positions_rv = len_dna - end for end in end_positions_rv
-
+        print(coordinates_rv)
     # Either I create all features here or I just provide a tuple of 4 lists 
-    return 
-
 
 
 
