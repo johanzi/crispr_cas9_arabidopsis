@@ -148,6 +148,21 @@ Based on the information from [chopchop](http://chopchop.cbu.uib.no/instructions
 
 > According to [Hsu et al., 2013](https://www.nature.com/articles/nbt.2647), mismatches can be tolerated at any position except in the PAM motif. We have therefore created a second uniqueness method that searches for mismatches only in the 20 bp upstream of the PAM. This is the default method.
 
+
+
+### Cas-OFFinder
+
+Download binaries from last release (2.4 for Linux64)
+
+```
+https://sourceforge.net/projects/cas-offinder/files/Binaries/2.4/Linux64/cas-offinder/download
+
+```
+
+
+
+
+
 ## Efficiency score
 
 Based on the information from [chopchop](http://chopchop.cbu.uib.no/instructions.php):
