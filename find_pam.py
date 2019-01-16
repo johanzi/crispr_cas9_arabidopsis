@@ -71,48 +71,43 @@ def search_motif(sequence):
     # Search on fw strand
     matches_fw = SeqUtils.nt_search(str(sequence.seq), motif)
     
-    print(sequence.seq) 
-
-
+    # Initialyze final list
+    coordinates_fw = []
+     
     if len(matches_fw) > 1:
-        # Initialyze final list
-        coordinates_fw = []
-        
         end_positions_fw = matches_fw[1::]
         start_positions_fw = [ end - len_protospacer + 1 for end in end_positions_fw ]
+        
+        # Check if protospacer fits in the sequence before adding the start
+        # and end coordinate to the list
         for start, end in zip(start_positions_fw, end_positions_fw):
             if start > 0:
                 coordinates_fw.append([start, end])    
-        
-                
-        print(coordinates_fw)
-    # Loop over positions and create end position and generate a feature
-    # based on length of protospacer
-
 
     # The coordinates are different and need to be corrected to match to fw strand
     reverse_seq = str(sequence.seq.reverse_complement())
     
-    print(reverse_seq)
     matches_rv = SeqUtils.nt_search(reverse_seq, motif)
-    print(matches_rv) 
-    if len(matches_rv) > 1:
-        # Initialyze final list
-        coordinates_rv = []
+    
+    # Initialyze final list
+    coordinates_rv = []
 
+    if len(matches_rv) > 1:
         end_positions_rv = matches_rv[1::]
         start_positions_rv = [ end - len_protospacer for end in end_positions_rv ]
-
         # Need to convert the coordinates in forward strand
         end_positions = [ len_dna - start for start in start_positions_rv ]
         start_positions = [ len_dna - end + 1 for end in end_positions_rv ]
+        
+        # Check if protospacer fits in the sequence before adding the start
+        # and end coordinate to the list
         for start, end in zip(start_positions, end_positions):
-            if start > 0:
+            if start > 0 and end < len_dna:
                 coordinates_rv.append([start, end])    
         
-        print(coordinates_rv)
-    # Either I create all features here or I just provide a tuple of 4 lists 
-
+    
+    # Return a tuple of lists for fw and rv matches
+    return coordinates_fw, coordinates_rv
 
 
 ############################################################
@@ -148,7 +143,12 @@ sequence.seq.alphabet = generic_dna
 # Find PAM in DNA sequence
 # https://biopython.org/wiki/Seq
 
-search_motif(sequence)
+coordinates_fw, coordinates_rv = search_motif(sequence)
+
+print("FWD")
+print(coordinates_fw)
+print("REV")
+print(coordinates_rv)
 
 
 
