@@ -27,7 +27,7 @@ parser.add_argument("-f","--fasta", help="provide a fasta file containing one DN
 parser.add_argument("-o","--output", help="output name, per default name of the fasta file", type=str)
 
 # Note I need to provide both const and default argument to have these values even if flag is not given
-parser.add_argument("-l","--length-protospacer", help="Length of the protospacer, default = 20 bp", nargs='?', type=int, const=19, default=19)
+parser.add_argument("-l","--length-protospacer", help="Length of the protospacer, default = 20 bp", nargs='?', type=int, const=19, default=20)
 
 parser.add_argument("-p","--pam", help="Define PAM sequence, default = NGG", nargs='?', type=str, const="NGG", default="NGG" )
 
@@ -52,6 +52,7 @@ def create_feature(sequence, name, start, end):
 
 
 # Function to find PAM
+# The coordinates given here are 0-based
 def search_motif(sequence):
 
     motif = str(args.pam)
@@ -72,11 +73,18 @@ def search_motif(sequence):
     
     print(sequence.seq) 
 
+
     if len(matches_fw) > 1:
-        start_positions_fw = matches_fw[1::]
-        end_positions_fw = [ start - full_len for start in start_positions_fw ]
-        coordinates_fw = [start_positions_fw, end_positions_fw]
-    
+        # Initialyze final list
+        coordinates_fw = []
+        
+        end_positions_fw = matches_fw[1::]
+        start_positions_fw = [ end - len_protospacer + 1 for end in end_positions_fw ]
+        for start, end in zip(start_positions_fw, end_positions_fw):
+            if start > 0:
+                coordinates_fw.append([start, end])    
+        
+                
         print(coordinates_fw)
     # Loop over positions and create end position and generate a feature
     # based on length of protospacer
@@ -87,18 +95,21 @@ def search_motif(sequence):
     
     print(reverse_seq)
     matches_rv = SeqUtils.nt_search(reverse_seq, motif)
-   
-    print(matches_rv)
+    print(matches_rv) 
     if len(matches_rv) > 1:
-        start_positions_rv = matches_fw[1::]
-        end_positions_rv = [ start - full_len for start in start_positions_rv ]
-        print(end_positions_rv)
+        # Initialyze final list
+        coordinates_rv = []
+
+        end_positions_rv = matches_rv[1::]
+        start_positions_rv = [ end - len_protospacer for end in end_positions_rv ]
 
         # Need to convert the coordinates in forward strand
-        start_positions_rv = [ len_dna - start for start in start_positions_rv ]
-        end_positions_rv = [ len_dna - end for end in end_positions_rv ]
-        coordinates_rv = [start_positions_rv, end_positions_rv]
-
+        end_positions = [ len_dna - start for start in start_positions_rv ]
+        start_positions = [ len_dna - end + 1 for end in end_positions_rv ]
+        for start, end in zip(start_positions, end_positions):
+            if start > 0:
+                coordinates_rv.append([start, end])    
+        
         print(coordinates_rv)
     # Either I create all features here or I just provide a tuple of 4 lists 
 
