@@ -41,9 +41,14 @@ args = parser.parse_args()
 
 
 # Function to generate a sequence
-def create_feature(sequence, name, start, end):
+# Use option strand to indicate on which strand is located the feature (fw per default)
+# Use quote +1 (forward) or -1 (reverse)
+# Check http://biopython.org/DIST/docs/api/Bio.SeqFeature.FeatureLocation-class.html
+
+def create_feature(sequence, name, start, end, strand=+1):
+
     if str(name) and int(start) and int(end):
-        my_feature_location = SeqFeature.FeatureLocation(start, end)
+        my_feature_location = SeqFeature.FeatureLocation(start, end, strand=strand)
         my_feature = SeqFeature.SeqFeature(my_feature_location,type=name)
         sequence.features.append(my_feature)
 
@@ -52,7 +57,8 @@ def create_feature(sequence, name, start, end):
 
 
 # Function to find PAM
-# The coordinates given here are 0-based
+# The coordinates given here are 0-based (the conversion to Genbank format
+# will add 1bp to the start coordinate and make it correctly matching the sequence)
 def search_motif(sequence):
 
     motif = str(args.pam)
@@ -76,7 +82,7 @@ def search_motif(sequence):
      
     if len(matches_fw) > 1:
         end_positions_fw = matches_fw[1::]
-        start_positions_fw = [ end - len_protospacer + 1 for end in end_positions_fw ]
+        start_positions_fw = [ end - len_protospacer for end in end_positions_fw ]
         
         # Check if protospacer fits in the sequence before adding the start
         # and end coordinate to the list
@@ -97,7 +103,7 @@ def search_motif(sequence):
         start_positions_rv = [ end - len_protospacer for end in end_positions_rv ]
         # Need to convert the coordinates in forward strand
         end_positions = [ len_dna - start for start in start_positions_rv ]
-        start_positions = [ len_dna - end + 1 for end in end_positions_rv ]
+        start_positions = [ len_dna - end for end in end_positions_rv ]
         
         # Check if protospacer fits in the sequence before adding the start
         # and end coordinate to the list
@@ -142,17 +148,23 @@ sequence.seq.alphabet = generic_dna
 
 # Find PAM in DNA sequence
 # https://biopython.org/wiki/Seq
-
 coordinates_fw, coordinates_rv = search_motif(sequence)
 
-print("FWD")
 print(coordinates_fw)
-print("REV")
 print(coordinates_rv)
 
+# Create feature for each protospacers
+if len(coordinates_fw) > 0:
+    for index, item in enumerate(coordinates_fw):
+        protospacer_name = "site_fw_" + str(index + 1)
+        create_feature(sequence, protospacer_name, item[0], item[1], +1)
+
+if len(coordinates_rv) > 0:
+    for index, item in enumerate(coordinates_rv):
+        protospacer_name = "site_rv_" + str(index + 1)
+        create_feature(sequence, protospacer_name, item[0], item[1], -1)
 
 
-# Add features before converting to genbank
 
 # Convert fasta file into genebank file. Not
 # Note that conversion to genbank format leads to the addition of 1 for 
