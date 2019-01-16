@@ -7,6 +7,7 @@ sequences and the protospacer (20 bp sequence upstream
 of the PAM sequence).
 
 Author: Johan Zicola
+Email: johan.zicola@gmail.com
 Date: Mon Jan 14 20:24:53 CET 2019
 
 '''
@@ -17,10 +18,15 @@ import argparse
 from Bio import SeqIO, SeqFeature, SeqUtils
 from Bio.Alphabet import generic_dna, generic_protein
 
-
 ###################### PARSER #################################
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description='''
+This script process a DNA sequence in fasta format to generate a GenBank file
+(check https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html) containing all possible
+target sites for CRISPR-Cas9 editing. The GenBank output file can be opened in any plasmid
+browser tool (LaserGene, SnapGene, ApE, ...) to visualize locations of the target site and
+design primers.
+''')
 
 parser.add_argument("-f","--fasta", help="provide a fasta file containing one DNA sequence only", type=str)
 
@@ -118,69 +124,63 @@ def search_motif(sequence):
 
 ############################################################
 
+def main():
+    # Get name of output (remove extension if user added it in output name)
+    if args.output:
+        name_output = os.path.splitext(args.output)[0] + ".gb"
+    else:
+        name_output = os.path.splitext(args.fasta)[0] + ".gb"
 
-# Get name of output
-if args.output:
-	name_output = os.path.splitext(args.output)[0] + ".gb"
-else:
-	name_output = os.path.splitext(args.fasta)[0] + ".gb"
+    # Open argument fasta file
+    input_handle = open(args.fasta, "rU")
 
+    # Open output file to write in
+    output_handle = open(name_output, "w")
 
-# Open argument fasta file
-input_handle = open(args.fasta, "rU")
+    # Check if file is in fastam format and if several fasta sequences are 
+    # in fasta file
+    sequences = list(SeqIO.parse(input_handle, "fasta"))
 
-# Open output file to write in
-output_handle = open(name_output, "w")
+    if len(sequences) == 0:
+        sys.exit(args.fasta + " is not in fasta format.")
+    if len(sequences) > 1:
+        sys.exit("The input fasta file contains "+str(len(sequences))+". It should contain only one sequence")
+    else:
+        # Remove the list structure
+        sequence = sequences[0]
 
+    # Get DNA sequence from the fasta file
+    sequence.seq.alphabet = generic_dna
 
-# Check if several fasta sequences in fasta file
-sequences = list(SeqIO.parse(input_handle, "fasta"))
+    # Find PAM in DNA sequence (https://biopython.org/wiki/Seq)
+    coordinates_fw, coordinates_rv = search_motif(sequence)
 
-if len(sequences) > 1:
-	sys.exit("The input fasta file contains "+str(len(sequences))+". I should contain only one sequence")
-else:
-    sequence = sequences[0]
+    # Create feature for each protospacers
+    if len(coordinates_fw) > 0:
+        for index, item in enumerate(coordinates_fw):
+            protospacer_name = "site_fw_" + str(index + 1)
+            create_feature(sequence, protospacer_name, item[0], item[1], +1)
 
-
-# Get DNA sequence from the fasta file
-sequence.seq.alphabet = generic_dna
-
-
-# Find PAM in DNA sequence
-# https://biopython.org/wiki/Seq
-coordinates_fw, coordinates_rv = search_motif(sequence)
-
-print(coordinates_fw)
-print(coordinates_rv)
-
-# Create feature for each protospacers
-if len(coordinates_fw) > 0:
-    for index, item in enumerate(coordinates_fw):
-        protospacer_name = "site_fw_" + str(index + 1)
-        create_feature(sequence, protospacer_name, item[0], item[1], +1)
-
-if len(coordinates_rv) > 0:
-    for index, item in enumerate(coordinates_rv):
-        protospacer_name = "site_rv_" + str(index + 1)
-        create_feature(sequence, protospacer_name, item[0], item[1], -1)
+    if len(coordinates_rv) > 0:
+        for index, item in enumerate(coordinates_rv):
+            protospacer_name = "site_rv_" + str(index + 1)
+            create_feature(sequence, protospacer_name, item[0], item[1], -1)
 
 
-
-# Convert fasta file into genebank file. Not
-# Note that conversion to genbank format leads to the addition of 1 for 
-# each start of features. Therefore, the start position should be given 
-# 0-based system to anticipate the 1-based conversion
-SeqIO.write(sequence, output_handle, "genbank")
-
+    # Convert fasta file into genebank file. 
+    # Note that conversion to genbank format leads to the addition of 1 for 
+    # each start of features. Therefore, the start position should be given 
+    # 0-based system to anticipate the 1-based conversion
+    SeqIO.write(sequence, output_handle, "genbank")
 
 
-output_handle.close()
-input_handle.close()
-
-# Get positions of the PAM and corresponding protospacers
-# The genbank format is 1-based, closed [start, end], range = end - start + 1
+    # Close open files
+    output_handle.close()
+    input_handle.close()
 
 
+if __name__ == "__main__":
+    sys.exit(main())
 
 
 
