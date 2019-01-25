@@ -136,9 +136,10 @@ The tool utilized here is the web-based tool for guide design by [Synthego](http
 
 Alternative webtools to Synthego:
 
-* [chopchop](http://chopchop.cbu.uib.no/search.php): This website also design for each target site the corresponding primer pair for genotyping
+* [chopchop](http://chopchop.cbu.uib.no/search.php): This website also design for each target site the corresponding primer pair for genotyping and allows to use a DNA sequence as input
 * [crispr.cos](https://crispr.cos.uni-heidelberg.de/)
 * [CRISPR-PLANT](https://www.genome.arizona.edu/crispr/CRISPRsearch.html)
+
 
 ## Verify potential off-target
 
@@ -148,19 +149,29 @@ Based on the information from [chopchop](http://chopchop.cbu.uib.no/instructions
 
 > According to [Hsu et al., 2013](https://www.nature.com/articles/nbt.2647), mismatches can be tolerated at any position except in the PAM motif. We have therefore created a second uniqueness method that searches for mismatches only in the 20 bp upstream of the PAM. This is the default method.
 
+If you use a webtool as chopchop or others, a score for off-target is calculated and included in the ranking of the displayed target sites.
 
+When working with non-reference accessions (but sequencing data are available), one should verify that the chosen target sites to do match an undesidered site in the accession used. For Arabidopsis, the appropriate pseudogenome can be downloaded on  [1001genomes.org](http://tools.1001genomes.org/pseudogenomes/#select_strains) if the accession is within of the project. One can also generate a pseudogenome from a VCF file using the following [pipeline](https://github.com/johanzi/make_pseudogenome) if sequencing data are available.
 
-### Cas-OFFinder
+One way to look for off-target in a pseudogenome is to align the chosen target sequence using Bowtie.
 
-Download binaries from last release (2.4 for Linux64)
+Make the Bowtie index for your genome (fasta file format)
 
 ```
-https://sourceforge.net/projects/cas-offinder/files/Binaries/2.4/Linux64/cas-offinder/download
-
+bowtie-build -f pseudogenome.fa  pseudogenome_prefix
 ```
 
+Search for your target sequence by allowing 2 mismatch the flag `-n 2`
 
+```
+bowtie pseudogenome_prefix -n 1 -c TCGAGAGAGAGCGTATTTTC
+```
 
+To allow 2 mismatches, use `-n 2`. Even though up to 3 mismatches are allowed with the `-n` argument, only 2 mismatches will be tolerated (I wrote an issue in their [GitHub repository][1]). The seed length is 28 by default so you don't need to change that as you work with CRISPR-Cas9 target sequences (typically 20 bp). Check more in Bowtie [documentation](http://bowtie-bio.sourceforge.net/manual.shtml).
+
+**Note**: Bowtie is used since Bowtie2 allows maximum 1 mismatch, which is a drawback in this case. Bowtie is used to identify off-targets in the most common webtools for sgRNAs design such as [CHOPCHOP](https://academic.oup.com/nar/article/42/W1/W401/2437392) or [CCTop](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4409221/).
+
+If only 1 match (corresponding to the selected target sequence) is returned by Bowtie, it indicates that no other site in the genome are matching the target sequence with an allowance of 2 mismatches.
 
 
 ## Efficiency score
@@ -175,8 +186,6 @@ Based on the information from [chopchop](http://chopchop.cbu.uib.no/instructions
 * [Xu et al. 2015](https://genome.cshlp.org/content/25/8/1147.long) - only for NGG PAM (default)
 
 > The simplest form of efficiency score is 'G20', which prioritizes a guanine at position 20, just upstream of PAM
-
-
 
 ## Design primers
 
