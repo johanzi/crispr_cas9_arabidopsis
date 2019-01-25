@@ -17,6 +17,9 @@ PCR reaction with pCBC-DT1T2 for the 2 target sites which can be incorporated
 # User needs to fill in according to requested overhang
 # for Golden Gate cloning and used pCBC vector
 
+
+length_protospacer = 20
+
 # sgRNA1 (first target site)
 golden_gate_1_5p = "ATATATGGTCTCGATTG"
 golden_gate_1_3p = "G"
@@ -51,7 +54,7 @@ for line in file:
     if line.strip():
         line = line.strip()
         
-        if len(line) != 19:
+        if len(line) != length_protospacer:
             sys.exit("The target site "+str(line) +"  is not equal to 19")
         else:
             line = line.lower()
