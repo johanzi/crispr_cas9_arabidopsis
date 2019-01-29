@@ -27,6 +27,10 @@ golden_gate_1_3p = "G"
 vector_overhang_1 = "GTTTTAGAGCTAGAAATAGCA"
 
 # sgRNA2 (second target site)
+# Note that in Wang et al 2015, the primer DT2-BsR contain an error
+# of 1 base pair ATTATTGGTCTC|G|AAAC where G should be T. It actually
+# should not influence the construct since this part of the sequence is 
+# cut by BsaI
 golden_gate_2_5p = "ATTATTGGTCTCTAAAC"
 golden_gate_2_3p = "CAA"
 
