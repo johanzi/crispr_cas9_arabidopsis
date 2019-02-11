@@ -13,6 +13,20 @@ PCR reaction with pCBC-DT1T2 for the 2 target sites which can be incorporated
 
 """
 
+
+def reverse_complement(my_dna):
+    my_dna = str(my_dna)
+    my_dna = my_dna.upper()
+    new_str1 = str.replace(my_dna, 'A','t')
+    new_str2 = str.replace(new_str1, 'T','a')
+    new_str3 = str.replace(new_str2, 'C','g')
+    new_str4 = str.replace(new_str3, 'G','c')
+    new_str5 = new_str4.lower()
+    new_str6 = new_str5[::-1]
+
+    return new_str6
+
+
 # Define sequence to add for sgRNA1 and 2
 # User needs to fill in according to requested overhang
 # for Golden Gate cloning and used pCBC vector
@@ -59,14 +73,17 @@ for line in file:
         line = line.strip()
         
         if len(line) != length_protospacer:
-            sys.exit("The target site "+str(line) +"  is not equal to 19")
+            sys.exit("The target site "+str(line) +"  is not equal to "+str(length_protospacer))
         else:
             line = line.lower()
             
             DT1_BsF = golden_gate_1_5p + str(line) + golden_gate_1_3p
             DT1_F0 = str(line) + vector_overhang_1
-            DT2_BsR = golden_gate_2_5p + str(line) + golden_gate_2_3p
-            DT2_R0 = vector_overhang_2_5p + str(line) + vector_overhang_2_3p
+            
+            line_rc = reverse_complement(line)
+			
+            DT2_BsR = golden_gate_2_5p + str(line_rc) + golden_gate_2_3p
+            DT2_R0 = vector_overhang_2_5p + str(line_rc) + vector_overhang_2_3p
 
             print("Target sequence "+str(num_sequence)+": "+line)
             print(prefix+"DT1_BsF\t"+DT1_BsF)
