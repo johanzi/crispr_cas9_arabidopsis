@@ -122,7 +122,7 @@ The 2 most outward primers indicated in red (DT1-BsF) and red (DT2-BsR) allow to
 
 Both should contain the 19 bp of the target site (highlighted in yellow) plus flanking regions that are either used for Gateway cloning or for the merging to the vector pCBC-DT1T2.
 
-**Note**: If the PAM is located on the reverse strand, the sequence used in the primer represents the reverse complement sequence of the + strand. See example below. Note that the PAM should always be in 5' position of the target site in the pCBC-DT1T2 plasmid.
+**Note**: If the PAM is located on the reverse strand, the sequence used in the primer represents the reverse complement sequence of the + strand. See example below. Note that the PAM should always be in 3' position of the target site in the pCBC-DT1T2 plasmid, that is to say between the protospacer and the guide RNA scaffold.
 
 ![](images/PAM_minus_strand.PNG)
 *Representation of a target site plus its PAM motif (highlighted in yellow) when located on reverse strand. The PAM is NEVER contained in the final primer sequence.*
@@ -237,15 +237,16 @@ python primer_modifier.py sgRNAs.txt AT1G65480_exon2
 Target sequence 1: tgtttaatgaaggttatgg
 AT1G65480_exon2_DT1_BsF ATATATGGTCTCGATTGtgtttaatgaaggttatggG
 AT1G65480_exon2_DT1_F0  tgtttaatgaaggttatggGTTTTAGAGCTAGAAATAGCA
-AT1G65480_exon2_DT2_BsR ATTATTGGTCTCTAAACtgtttaatgaaggttatggCAA
-AT1G65480_exon2_DT2_R0  AACtgtttaatgaaggttatggCAATCTCTTAGTCGACTCTAC
+AT1G65480_exon2_DT2_BsR ATTATTGGTCTCTAAACccataaccttcattaaacaCAA
+AT1G65480_exon2_DT2_R0  AACccataaccttcattaaacaCAATCTCTTAGTCGACTCTAC
 
 
 Target sequence 2: gagttagtgcacaaaccaa
 AT1G65480_exon2_DT1_BsF ATATATGGTCTCGATTGgagttagtgcacaaaccaaG
 AT1G65480_exon2_DT1_F0  gagttagtgcacaaaccaaGTTTTAGAGCTAGAAATAGCA
-AT1G65480_exon2_DT2_BsR ATTATTGGTCTCTAAACgagttagtgcacaaaccaaCAA
-AT1G65480_exon2_DT2_R0  AACgagttagtgcacaaaccaaCAATCTCTTAGTCGACTCTAC
+AT1G65480_exon2_DT2_BsR ATTATTGGTCTCTAAACttggtttgtgcactaactcCAA
+AT1G65480_exon2_DT2_R0  AACttggtttgtgcactaactcCAATCTCTTAGTCGACTCTAC
+
 ```
 
 This generates for each target site the primers for both sgRNAs (target sequence in lowercase). The user decides then to which sgRNA each target sequence goes. For instance, I will put the target site `tgtttaatgaaggttatgg` in the first sgRNA and the target site `gagttagtgcacaaaccaa` in the second. I therefore need to order the following primers:
@@ -253,14 +254,12 @@ This generates for each target site the primers for both sgRNAs (target sequence
 ```
 AT1G65480_exon2_DT1_BsF ATATATGGTCTCGATTGtgtttaatgaaggttatggG
 AT1G65480_exon2_DT1_F0  tgtttaatgaaggttatggGTTTTAGAGCTAGAAATAGCA
-AT1G65480_exon2_DT2_BsR ATTATTGGTCTCTAAACgagttagtgcacaaaccaaCAA
-AT1G65480_exon2_DT2_R0  AACgagttagtgcacaaaccaaCAATCTCTTAGTCGACTCTAC
+AT1G65480_exon2_DT2_BsR ATTATTGGTCTCTAAACttggtttgtgcactaactcCAA
+AT1G65480_exon2_DT2_R0  AACttggtttgtgcactaactcCAATCTCTTAGTCGACTCTAC
+
 ```
 
-These primers would fit on the pCBC plasmid as indicated below (lowercase nucleotides indicate target sites)
-
-![](images/sgRNA_primers.PNG)
-*Part of the plasmid pCBC-DT1T2 containing the elements which will be transfered into pHEE401E during the GoldenGate cloning. Chosen target site sequences are indicted in lower capital in the different primers.*
+Note that the second target site is reverse complemented in the DT2 primers.
 
 Note: the GoldenGate reaction is usually working straight away but the user can order additional primers for other cutting sites. In this case, select at step 3 additional target sites and generate the primer sequence for sgRNA1 and sgRNA2 as explained above.
 
