@@ -10,7 +10,7 @@ CRISPR-Cas9 editing
 - [Material required](#material-required)
   * [Plasmids](#plasmids)
     + [Module vector pCBC-DT1T2](#module-vector-pcbc-dt1t2)
-    + [pHHE401E binary vector](#phhe401e-binary-vector)
+    + [pHEE401E binary vector](#phee401e-binary-vector)
 - [Design of sgRNAs](#design-of-sgrnas)
   * [Cloning strategy](#cloning-strategy)
   * [Define target sites](#define-target-sites)
@@ -33,7 +33,6 @@ CRISPR-Cas9 editing
 ## CRISPR/Cas system
 
 
-
 ## single guide RNA
 
 A single guide RNA (sgRNA) is an engineered RNA molecule containing 2 elements:
@@ -50,10 +49,10 @@ In nature, these 2 elements form 2 separate RNA molecules which hybridize to ens
 
 ## Plasmids
 
-The construct is split into one module vector set (pCBC-DT1T2) containing two single guide RNAs (sgRNAs) and a binary vector based on pCAMBIA (pHHE401E) containing additional sequences ensuring proper expression of the 2 sgRNAs and transformation into Arabidopsis. The cloning happens in 2 steps:
+The construct is split into one module vector set (pCBC-DT1T2) containing two single guide RNAs (sgRNAs) and a binary vector based on pCAMBIA (pHEE401E) containing additional sequences ensuring proper expression of the 2 sgRNAs and transformation into Arabidopsis. The cloning happens in 2 steps:
 
 1. First a PCR on pCBC-DT1T2 allows to add the proper target sequences on the gRNA and the *BsaI* restriction sites on pCBC-DT1T2 
-2. Secondly, a restriction-ligation step is performed to incorporate a part of pCBC-DT1T2 into pHHE401E, removing in the meantime its spectinomycin (SpR) resistance cassette of the latter [Xing et al 2014](https://bmcplantbiol.biomedcentral.com/articles/10.1186/s12870-014-0327-y).
+2. Secondly, a restriction-ligation step is performed to incorporate a part of pCBC-DT1T2 into pHEE401E, removing in the meantime its spectinomycin (SpR) resistance cassette of the latter [Xing et al 2014](https://bmcplantbiol.biomedcentral.com/articles/10.1186/s12870-014-0327-y).
 
 *Cas9* expression is driven by the promoter of the egg cell-specific *EC1.1* ([AT1G76750](https://www.arabidopsis.org/servlets/TairObject?id=29908&type=locus)) gene and the enhancer  *EC1.2* gene ([AT2G21740](https://www.arabidopsis.org/servlets/TairObject?accession=locus:2052536)). This tissue-specific expression of *Cas9* allows to obtain T1 homozygous or biallelic plants instead of mosaic plants. The terminator of the *Pisum sativum rbcS E9* gene was tested according to previous observation ([Sarrion-Perdigones et al 2013](http://www.plantphysiol.org/content/162/3/1618.short)) and found more efficient than coupled with a NOS terminator. See reference [Wang et al. 2015](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0715-0).
 
@@ -79,14 +78,14 @@ The enzyme cuts 1 nucleotide directly upstream of the recognition site on the + 
 
 
 ![](images/BsaI_sites.PNG) 
-*Part of the plasmid pCBC-DT1T2 containing the elements which will be transfered into pHHE401E during the GoldenGate cloning. BsaI restriction sites are highlighted in yellow.*
+*Part of the plasmid pCBC-DT1T2 containing the elements which will be transfered into pHEE401E during the GoldenGate cloning. BsaI restriction sites are highlighted in yellow.*
 
-Note that the vector pCBC-DT1T2 does not contain the promoter of the first sgRNA and the second sgRNA contains neither its scaffold sequence nor its terminator. These sequences are actually in the pHHE401E binary vector and will be integrated in place after the digestion with *BsaI* enzyme and the ligation (GoldenGate cloning).
+Note that the vector pCBC-DT1T2 does not contain the promoter of the first sgRNA and the second sgRNA contains neither its scaffold sequence nor its terminator. These sequences are actually in the pHEE401E binary vector and will be integrated in place after the digestion with *BsaI* enzyme and the ligation (GoldenGate cloning).
 
 
-### pHHE401E binary vector
+### pHEE401E binary vector
 
-pHHE401E is based on pCambia backbone for Agrobacterium-mediated transformation. It contains the complementary parts of the pCBC-DT1T2 which ensures the proper expression of the 2 sgRNAs plus other features needed for Agrobacterium transformation and selection.
+pHEE401E is based on pCambia backbone for Agrobacterium-mediated transformation. It contains the complementary parts of the pCBC-DT1T2 which ensures the proper expression of the 2 sgRNAs plus other features needed for Agrobacterium transformation and selection.
 
 More information on https://www.addgene.org/71287/ 
 
@@ -117,9 +116,9 @@ These target sequences should be 19 bp long be adjacent to a 5'-NGG-3' site (N b
 For instance for the 22-mer `TCGAGAGAGAGCGTATTTCGGG`, the 3-mer `GGG` is the PAM motif located 5' of the sequence and the cut will therefore take place here: `TCGAGAGAGAGCGTATT|TTCGGG`. The sequence to include in the 2 primers will be therefore the 19-mer `TCGAGAGAGAGCGTATTTTC` (the PAM should NOT be included).
 
 ![](images/sgRNAs.PNG)
-*Part of the plasmid pCBC-DT1T2 containing the elements which will be transfered into pHHE401E during the GoldenGate cloning. Target sites are highlighted in yellow.*
+*Part of the plasmid pCBC-DT1T2 containing the elements which will be transfered into pHEE401E during the GoldenGate cloning. Target sites are highlighted in yellow.*
 
-The 2 most outward primers indicated in red (DT1-BsF) and red (DT2-BsR) allow to add specific overhanging sites including a specific BsaI site and its corresponding overhang sequence present in the pHHE401E binary vector and allow directional cloning. The second 2 primers more inward (DT1-F0 and DT2-R0) contain a part of the vector pCBC-DT1T2. All primers contain their respective target sites (Ns). The PCR with all primers allow therefore to add in a first step the target sites with the primers DT1-F0 and DT2-R0 and in a second step the BsaI restriction site for GoldenGate cloning (DT1-BsF and DT2-BsR).
+The 2 most outward primers indicated in red (DT1-BsF) and red (DT2-BsR) allow to add specific overhanging sites including a specific BsaI site and its corresponding overhang sequence present in the pHEE401E binary vector and allow directional cloning. The second 2 primers more inward (DT1-F0 and DT2-R0) contain a part of the vector pCBC-DT1T2. All primers contain their respective target sites (Ns). The PCR with all primers allow therefore to add in a first step the target sites with the primers DT1-F0 and DT2-R0 and in a second step the BsaI restriction site for GoldenGate cloning (DT1-BsF and DT2-BsR).
 
 Both should contain the 19 bp of the target site (highlighted in yellow) plus flanking regions that are either used for Gateway cloning or for the merging to the vector pCBC-DT1T2.
 
@@ -233,7 +232,7 @@ GAGTTAGTGCACAAACCAA
 I can add a prefix as second argument to get directly a name for each of my primer. In this case, I use the prefix `AT1G65480_exon2`.
 
 ```
-python /primer_modifier.py sgRNAs.txt AT1G65480_exon2
+python primer_modifier.py sgRNAs.txt AT1G65480_exon2
 
 Target sequence 1: tgtttaatgaaggttatgg
 AT1G65480_exon2_DT1_BsF ATATATGGTCTCGATTGtgtttaatgaaggttatggG
@@ -261,24 +260,18 @@ AT1G65480_exon2_DT2_R0  AACgagttagtgcacaaaccaaCAATCTCTTAGTCGACTCTAC
 These primers would fit on the pCBC plasmid as indicated below (lowercase nucleotides indicate target sites)
 
 ![](images/sgRNA_primers.PNG)
-*Part of the plasmid pCBC-DT1T2 containing the elements which will be transfered into pHHE401E during the GoldenGate cloning. Chosen target site sequences are indicted in lower capital in the different primers.*
+*Part of the plasmid pCBC-DT1T2 containing the elements which will be transfered into pHEE401E during the GoldenGate cloning. Chosen target site sequences are indicted in lower capital in the different primers.*
 
 Note: the GoldenGate reaction is usually working straight away but the user can order additional primers for other cutting sites. In this case, select at step 3 additional target sites and generate the primer sequence for sgRNA1 and sgRNA2 as explained above.
 
 
-# GoldenGate cloning
+# Cloning and transformation in Arabidopsis
+
+The detailed protocol for cloning and transformation in Arabidopsis is available on www.protocols.io (in progress). The pipeline is as defined here:
+
+picture pipeline
 
 
-# Transformation and selection in E. coli
-
-
-# Transformation and selection in A. tumefaciens
-
-
-# Agrobacterium-mediated transformation of Arabidopsis
-
-
-# T1 selection
 
 
 
