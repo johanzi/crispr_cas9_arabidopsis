@@ -111,9 +111,9 @@ Primers for the second sgRNA (red on picture below)
 * DT2-BsR
 * DT2-R0
 
-These target sequences should be 19 bp long be adjacent to a 5'-NGG-3' site (N being any nucleotide), which is not in the primer sequence (note that 20 bp long target sequence should also work, the theoretical range for SpCas9 being 15-20 bp). This NGG site is called the protospacer adjacent motif (PAM) and is specific to certain Cas9 nucleases, including the most used: SpCas9, which is produced by the bacterium *Streptococcus pyogenes* (Cas9 nucleases from other species may have a different PAM). SpCas9 enzymes cuts 3 bp upstream of the PAM motif (always within the target sequence). The PAM should always be originally located at the 5' end of the sgRNA target sequence.
+These target sequences should be 19 bp long be adjacent to a 5'-NGG-3' site (N being any nucleotide), which is not in the primer sequence (note that 20 bp also works since the theoretical range for SpCas9 guide sequence is 15-20 bp). This NGG site is called the protospacer adjacent motif (PAM) and is specific to certain Cas9 nucleases, including the most used: SpCas9, which is produced by the bacterium *Streptococcus pyogenes* (Cas9 nucleases from other species may have a different PAM). SpCas9 enzymes cuts 3 bp upstream of the PAM motif (always within the target sequence). The PAM should always be originally located at the 5' end of the sgRNA target sequence.
 
-For instance for the 22-mer `TCGAGAGAGAGCGTATTTCGGG`, the 3-mer `GGG` is the PAM motif located 5' of the sequence and the cut will therefore take place here: `TCGAGAGAGAGCGTATT|TTCGGG`. The sequence to include in the 2 primers will be therefore the 19-mer `TCGAGAGAGAGCGTATTTTC` (the PAM should NOT be included).
+For instance, in the 22-mer `TCGAGAGAGAGCGTATTTCGGG`, the 3-mer `GGG` is the PAM motif located 3' of the sequence and the cut will therefore take place here: `TCGAGAGAGAGCGTATT|TTCGGG`. The sequence to include in the 2 primers will be therefore the 19-mer `TCGAGAGAGAGCGTATTTTC` (the PAM should NOT be included).
 
 ![](images/sgRNAs.PNG)
 *Part of the plasmid pCBC-DT1T2 containing the elements which will be transfered into pHEE401E during the GoldenGate cloning. Target sites are highlighted in yellow.*
