@@ -17,11 +17,7 @@ CRISPR-Cas9 editing
   * [Verify potential off-target](#verify-potential-off-target)
   * [Efficiency score](#efficiency-score)
   * [Design primers](#design-primers)
-- [GoldenGate cloning](#goldengate-cloning)
-- [Transformation and selection in E. coli](#transformation-and-selection-in-e-coli)
-- [Transformation and selection in A. tumefaciens](#transformation-and-selection-in-a-tumefaciens)
-- [Agrobacterium-mediated transformation of Arabidopsis](#agrobacterium-mediated-transformation-of-arabidopsis)
-- [T1 selection](#t1-selection)
+- [Cloning and transformation in Arabidopsis](#cloning-and-transformation-in-arabidopsis)
 - [Authors](#authors)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -98,7 +94,6 @@ Plasmid available in genebank format in [plasmids/pHEE401E.gbk](plasmids/pHEE401
 
 The vector pCBC-DT1T2 contain 2 sgRNAs, therefore 2 target sequences. They can target 2 different regions of the genome or target the same gene for instance.
 
-These should be no more than 100 bp apart in the genome (ref?)
 To generate 2 sgRNAs with each their target site (gRNA1 and gRNA2 indicated by blue arrows and highlighted in yellow in image below), 4 primers need to be designed. Two primers for the target site 1 and 2 primers for the target size 2 (see image below):
 
 Primers for the first sgRNA (green on picture below)
@@ -111,7 +106,7 @@ Primers for the second sgRNA (red on picture below)
 * DT2-BsR
 * DT2-R0
 
-These target sequences should be 19 bp long be adjacent to a 5'-NGG-3' site (N being any nucleotide), which is not in the primer sequence (note that 20 bp also works since the theoretical range for SpCas9 guide sequence is 15-20 bp). This NGG site is called the protospacer adjacent motif (PAM) and is specific to certain Cas9 nucleases, including the most used: SpCas9, which is produced by the bacterium *Streptococcus pyogenes* (Cas9 nucleases from other species may have a different PAM). SpCas9 enzymes cuts 3 bp upstream of the PAM motif (always within the target sequence). The PAM should always be originally located at the 5' end of the sgRNA target sequence.
+These target sequences should be 19-20 bp long be adjacent to a 5'-NGG-3' site (N being any nucleotide), which is not in the primer sequence (note that 20 bp also works since the theoretical range for SpCas9 guide sequence is 15-20 bp). This NGG site is called the protospacer adjacent motif (PAM) and is specific to certain Cas9 nucleases, including the most used: SpCas9, which is produced by the bacterium *Streptococcus pyogenes* (Cas9 nucleases from other species may have a different PAM). SpCas9 enzymes cuts 3 bp upstream of the PAM motif (always within the target sequence). The PAM should always be originally located at the 5' end of the sgRNA target sequence. The script [find_pam.py](find_pam.py) and [primer_modifier.py](primer_modifier.py) have use per default 20 bp as protospacer lenght (can be modified in the script).
 
 For instance, in the 22-mer `TCGAGAGAGAGCGTATTTCGGG`, the 3-mer `GGG` is the PAM motif located 3' of the sequence and the cut will therefore take place here: `TCGAGAGAGAGCGTATT|TTCGGG`. The sequence to include in the 2 primers will be therefore the 19-mer `TCGAGAGAGAGCGTATTTTC` (the PAM should NOT be included).
 
@@ -266,13 +261,7 @@ Note: the GoldenGate reaction is usually working straight away but the user can 
 
 # Cloning and transformation in Arabidopsis
 
-The detailed protocol for cloning and transformation in Arabidopsis is available on www.protocols.io (in progress). The pipeline is as defined here:
-
-picture pipeline
-
-
-
-
+As it is quite challenging to format a protocol in Markdown, you can find the protocol as word document [CRISPR_cloning.docx](CRISPR_cloning.docx).
 
 
 # Authors
